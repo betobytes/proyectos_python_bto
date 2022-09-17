@@ -1,0 +1,90 @@
+import numpy as np 
+import matplotlib.pyplot as plt 
+import pandas 
+
+from keras.models import Sequential
+from keras.layers import Dense, LSTM, Dropout
+
+## se descargan los archivos de los preciso
+## faltan partes del codigo 
+
+#---------al parecer esto es una funcion--------
+
+a= dataset[i:(i+look_back), 0]
+dataX.append(a)
+dataY.append([dataset[i+ look_back, 0]]) 
+
+datax, dataY = np.array(dataX), np.array(dataY)
+
+#----------------IMPORTING CSV DATA---------------
+
+dataframe = pd.read_csv('Desktop/AZN.csv') #al parecer eso son los datos del mercado descargados 
+
+dataframe.index = dataframe['Date']
+
+dataframe = dataframe['Close']
+print(dataframe)
+
+#*****************PROCESING****************
+
+
+dataset= dataframe.values
+dataset.astype('float32')
+dataset = np.rashepe(dataset,(-1,1))
+
+
+#SCALING THE DATASET
+
+
+scaler= MinMaxScaler(feature_range =(0,1))
+
+dataset = scaler.fit_transform(dataset)
+
+
+#SPLIT INTO TRAINING AND TEST
+
+
+trainSize = int(len(datset)*0.7)
+testSize = len(dataset) -trainSize
+
+train, test = dataset [0: trainSize, :], datset[trainSize: len(dataset)]
+
+
+#---RESHAPE INTO X = T + 1
+
+
+look_back = 5 
+trainX, trinY =creteDataset(train, look_back)
+
+
+#---RESHAPE INPUT TO BE [samples, time_steps,fetures]
+
+
+trainX =np.reshape(trainX,(trainX.shape[0],1,trainX.shape[1]))
+testX = np.reshape(testX,(testX.shape[0],1,testX.shape[1]))
+
+
+model = Sequential()
+
+model.add(LSTM(20,input_shape=(1,look_back)))
+model.add(Dense(1,activation='sigmoid'))
+
+model.compile(loss='mean_square_error', optimizer='adam')
+model.fit(trainX,trainY,epochs=100, batch_size=1, verbose=1)
+
+
+#PLOT-------//GRAFICA
+
+dataset = np.reshape,(dataset,(dataset.shape[0]))
+testPredictions = np.reshape(testPredictions,(testPredictions.shape[0]))
+
+testPlot = np.empty_lyke(dataset)
+testPlot[::] = np.nan
+testPlot[trainSize + look_back + 1:]= testPredictions
+
+plt.plot(dataset)
+plt.plot(testPlot)
+plt.grid(true)
+plt.xlebel('time')
+plt.ylebel('Stock Price Prediction')
+plt.show()

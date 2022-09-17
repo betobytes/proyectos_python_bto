@@ -1,0 +1,5 @@
+#prueba python en atom
+var1 = int(input('valor de la variable uno: '))
+var2 = int(input('valor de la variable dos: '))
+print('hola mundo desede atom')
+print(f'el varlor de la variable uno es: {var1} el valor de la varibale dos es: {var2}')
